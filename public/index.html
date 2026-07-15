@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KDocs-Pro | Job documents, done right</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">K</span>
+      <span class="brand-name">KDocs<span class="accent">-Pro</span></span>
+    </div>
+    <button id="darkToggle" class="icon-btn" title="Toggle dark mode">🌙</button>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>Every document your job needs, in one place.</h1>
+      <p>Pick a stage, choose a template, fill in your details, and download a clean PDF for just <strong id="priceTag">KSh 25</strong>.</p>
+    </section>
+
+    <div class="stepper" id="stepper">
+      <div class="step active" data-step="1">1. Stage</div>
+      <div class="step" data-step="2">2. Document</div>
+      <div class="step" data-step="3">3. Template</div>
+      <div class="step" data-step="4">4. Details</div>
+      <div class="step" data-step="5">5. Pay & Download</div>
+    </div>
+
+    <section id="panel-stage" class="panel">
+      <h2>What stage are you at?</h2>
+      <div id="stageGrid" class="card-grid"></div>
+    </section>
+
+    <section id="panel-doc" class="panel hidden">
+      <h2>Which document do you need?</h2>
+      <div id="docGrid" class="card-grid"></div>
+      <button class="btn ghost back-btn" data-back="stage">← Back</button>
+    </section>
+
+    <section id="panel-template" class="panel hidden">
+      <h2>Pick a template</h2>
+      <div id="templateGrid" class="card-grid"></div>
+      <button class="btn ghost back-btn" data-back="doc">← Back</button>
+    </section>
+
+    <section id="panel-form" class="panel hidden">
+      <h2>Fill in your details</h2>
+      <form id="docForm" class="doc-form"></form>
+      <div class="form-actions">
+        <button class="btn ghost back-btn" data-back="template">← Back</button>
+        <button class="btn primary" id="previewBtn" type="button">Preview document</button>
+      </div>
+    </section>
+
+    <section id="panel-pay" class="panel hidden">
+      <h2>Preview & pay</h2>
+      <div class="preview-shell" id="previewShell">
+        <iframe id="previewFrame" title="Document preview"></iframe>
+        <div class="preview-shade" id="previewShade">
+          <span>Preview hidden — this tab isn't focused</span>
+        </div>
+      </div>
+      <p class="hint">This preview is watermarked. Pay KSh 25 to unlock a clean, downloadable copy.</p>
+
+      <div class="pay-box" id="payBox">
+        <label for="phoneInput">M-Pesa phone number</label>
+        <input id="phoneInput" type="tel" placeholder="07XXXXXXXX" />
+        <button class="btn primary" id="payBtn">Pay KSh <span id="priceTag2">25</span> with M-Pesa</button>
+        <p id="payStatus" class="pay-status"></p>
+      </div>
+
+      <button class="btn primary hidden" id="downloadBtn">Download clean PDF</button>
+      <button class="btn ghost back-btn" data-back="form">← Back</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>KDocs-Pro &mdash; built for Kenyan jobseekers and professionals.</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
