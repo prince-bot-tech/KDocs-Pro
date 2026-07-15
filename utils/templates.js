@@ -27,6 +27,14 @@ const STAGES = {
       farewell: { label: 'Farewell / Exit Letter' },
     },
   },
+  education: {
+    label: 'School, College & University',
+    documents: {
+      admission_application: { label: 'Admission / Application Letter' },
+      leave_permission: { label: 'School Leave / Permission Letter' },
+      fee_bursary_request: { label: 'Fee Waiver / Bursary Request' },
+    },
+  },
 };
 
 // 3 templates, reused across every document type - just the look changes.

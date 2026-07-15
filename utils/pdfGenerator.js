@@ -72,6 +72,30 @@ function letterBody(docType, f) {
       `Warm regards,`,
       `${name}`,
     ],
+    admission_application: [
+      `${greet}`,
+      `I am writing to apply for admission into the ${f.course || 'programme'} at ${f.institutionName || 'your institution'}. I hold ${f.qualification || 'the necessary qualifications'} and am keen to further my studies in this field.`,
+      `${f.reason || 'I am confident that this institution offers the right environment for me to grow academically and pursue my goals.'}`,
+      `I have attached my supporting documents for your review and look forward to your favourable response.`,
+      `Yours faithfully,`,
+      `${name}`,
+    ],
+    leave_permission: [
+      `${greet}`,
+      `I am writing to formally request permission for leave from ${f.institutionName || 'the institution'}, ${f.classOrYear ? `(${f.classOrYear})` : ''} from ${f.startDate || '[start date]'} to ${f.endDate || '[end date]'}, due to ${f.reason || 'personal reasons'}.`,
+      `${f.parentName ? `This request has the knowledge and support of my parent/guardian, ${f.parentName}.` : 'I will catch up on any missed work upon my return.'}`,
+      `Thank you for considering my request.`,
+      `Regards,`,
+      `${name}`,
+    ],
+    fee_bursary_request: [
+      `${greet}`,
+      `I am writing to request consideration for a fee waiver / bursary at ${f.institutionName || 'the institution'} for my ${f.course || 'studies'}.`,
+      `${f.reason || 'Due to my current financial circumstances, I am unable to meet the full cost of my fees, and would be grateful for any support that can be extended to me.'}`,
+      `I am committed to my studies and would deeply appreciate your assistance. Thank you for your time and consideration.`,
+      `Yours sincerely,`,
+      `${name}`,
+    ],
   };
 
   return bodies[docType] || [`${greet}`, 'Document content.', `${name}`];

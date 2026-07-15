@@ -57,6 +57,23 @@ const FIELD_SETS = {
     ['duration', 'Time at the company', 'text'], ['email', 'Personal email to share', 'text'],
     ['message', 'Personal message (optional)', 'textarea'],
   ],
+  admission_application: [
+    ['fullName', 'Full name', 'text'], ['email', 'Email', 'text'], ['phone', 'Phone', 'text'], ['address', 'Address', 'text'],
+    ['recipientName', 'Admissions officer (optional)', 'text'], ['institutionName', 'Institution name', 'text'],
+    ['course', 'Course / Programme', 'text'], ['qualification', 'Qualifications held', 'textarea'],
+    ['reason', 'Why this institution (optional)', 'textarea'],
+  ],
+  leave_permission: [
+    ['fullName', 'Student full name', 'text'], ['institutionName', 'School / institution name', 'text'],
+    ['classOrYear', 'Class / Year of study', 'text'], ['recipientName', 'Teacher / Dean (optional)', 'text'],
+    ['startDate', 'Leave start date', 'text'], ['endDate', 'Leave end date', 'text'],
+    ['reason', 'Reason for leave', 'textarea'], ['parentName', "Parent/guardian name (optional)", 'text'],
+  ],
+  fee_bursary_request: [
+    ['fullName', 'Full name', 'text'], ['institutionName', 'Institution name', 'text'],
+    ['course', 'Course / Programme', 'text'], ['recipientName', 'Bursar / Admin (optional)', 'text'],
+    ['reason', 'Your situation & request', 'textarea'],
+  ],
 };
 
 // ---------- State ----------
