@@ -63,7 +63,7 @@ router.post('/stkpush', async (req, res) => {
       Password: password,
       Timestamp: ts,
       TransactionType: 'CustomerPayBillOnline',
-      Amount: Number(process.env.PRICE_KES || 25),
+      Amount: Number(process.env.PRICE_KES || 20),
       PartyA: normalizePhone(phone),
       PartyB: process.env.DARAJA_SHORTCODE,
       PhoneNumber: normalizePhone(phone),

@@ -18,32 +18,25 @@
   <main class="wrap">
     <section class="intro">
       <h1>Every document for your job or your studies, in one place.</h1>
-      <p>Pick a stage, choose a template, fill in your details, and download a clean PDF for just <strong id="priceTag">KSh 20</strong>.</p>
+      <p>Pick a document, choose a template, fill in your details, and download a clean PDF for just <strong id="priceTag">KSh 20</strong>.</p>
     </section>
 
     <div class="stepper" id="stepper">
-      <div class="step active" data-step="1">1. Stage</div>
-      <div class="step" data-step="2">2. Document</div>
-      <div class="step" data-step="3">3. Template</div>
-      <div class="step" data-step="4">4. Details</div>
-      <div class="step" data-step="5">5. Pay & Download</div>
+      <div class="step active" data-step="1">1. Document</div>
+      <div class="step" data-step="2">2. Template</div>
+      <div class="step" data-step="3">3. Details</div>
+      <div class="step" data-step="4">4. Pay & Download</div>
     </div>
 
-    <section id="panel-stage" class="panel">
-      <h2>What stage are you at?</h2>
-      <div id="stageGrid" class="card-grid"></div>
-    </section>
-
-    <section id="panel-doc" class="panel hidden">
-      <h2>Which document do you need?</h2>
-      <div id="docGrid" class="card-grid"></div>
-      <button class="btn ghost back-btn" data-back="stage">← Back</button>
+    <section id="panel-catalog" class="panel">
+      <input id="catalogSearch" class="catalog-search" type="text" placeholder="Search documents..." />
+      <div id="catalogList"></div>
     </section>
 
     <section id="panel-template" class="panel hidden">
       <h2>Pick a template</h2>
       <div id="templateGrid" class="card-grid"></div>
-      <button class="btn ghost back-btn" data-back="doc">← Back</button>
+      <button class="btn ghost back-btn" data-back="catalog">← Back</button>
     </section>
 
     <section id="panel-form" class="panel hidden">

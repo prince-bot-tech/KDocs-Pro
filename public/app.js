@@ -74,6 +74,49 @@ const FIELD_SETS = {
     ['course', 'Course / Programme', 'text'], ['recipientName', 'Bursar / Admin (optional)', 'text'],
     ['reason', 'Your situation & request', 'textarea'],
   ],
+  self_appraisal: [
+    ['fullName', 'Full name', 'text'], ['position', 'Your position', 'text'], ['companyName', 'Company', 'text'],
+    ['recipientName', 'Manager name (optional)', 'text'], ['period', 'Review period (e.g. Q2 2026)', 'text'],
+    ['achievements', 'Key achievements', 'textarea'], ['challenges', 'Challenges faced (optional)', 'textarea'],
+    ['goals', 'Goals for next period', 'textarea'],
+  ],
+  handover_report: [
+    ['fullName', 'Full name', 'text'], ['position', 'Your position', 'text'], ['companyName', 'Company', 'text'],
+    ['recipientName', 'Successor / manager (optional)', 'text'], ['lastDay', 'Last working day', 'text'],
+    ['keyResponsibilities', 'Key responsibilities', 'textarea'], ['pendingTasks', 'Pending tasks / priorities', 'textarea'],
+    ['contacts', 'Key contacts (optional)', 'textarea'],
+  ],
+  experience_certificate: [
+    ['fullName', 'Employee full name', 'text'], ['position', 'Position held', 'text'], ['companyName', 'Company', 'text'],
+    ['startDate', 'Start date', 'text'], ['endDate', 'End date', 'text'],
+    ['achievements', 'Notes on performance (optional)', 'textarea'],
+    ['issuedBy', 'Issued by (name/title, optional)', 'text'], ['issueDate', 'Issue date (optional)', 'text'],
+  ],
+  recommendation_letter: [
+    ['fullName', 'Your full name (referee)', 'text'], ['email', 'Email', 'text'], ['phone', 'Phone', 'text'], ['address', 'Address', 'text'],
+    ['recipientName', 'Addressed to (optional)', 'text'], ['candidateName', 'Candidate\'s name', 'text'],
+    ['relationship', 'Your relationship to them', 'text'], ['refereeCompany', 'Where you worked together', 'text'],
+    ['reason', 'What this is for (e.g. new job, university)', 'text'], ['achievements', 'Their strengths / achievements', 'textarea'],
+  ],
+  freelance_invoice: [
+    ['freelancerName', 'Your name / business name', 'text'], ['freelancerEmail', 'Your email', 'text'],
+    ['freelancerPhone', 'Your phone', 'text'], ['freelancerAddress', 'Your address (optional)', 'text'],
+    ['clientName', 'Client name', 'text'], ['clientEmail', 'Client email (optional)', 'text'],
+    ['invoiceNumber', 'Invoice number', 'text'], ['invoiceDate', 'Invoice date', 'text'], ['dueDate', 'Due date (optional)', 'text'],
+    ['items', 'Line items - one per line as "description - amount"', 'textarea'],
+    ['notes', 'Payment details / notes (optional)', 'textarea'],
+  ],
+  meeting_minutes: [
+    ['meetingTitle', 'Meeting title', 'text'], ['date', 'Date', 'text'],
+    ['attendees', 'Attendees', 'textarea'], ['agenda', 'Agenda', 'textarea'],
+    ['discussion', 'Discussion summary', 'textarea'], ['actionItems', 'Action items', 'textarea'],
+    ['nextMeetingDate', 'Next meeting date (optional)', 'text'],
+  ],
+  business_card: [
+    ['fullName', 'Full name', 'text'], ['jobTitle', 'Job title', 'text'], ['companyName', 'Company (optional)', 'text'],
+    ['phone', 'Phone', 'text'], ['email', 'Email', 'text'], ['website', 'Website (optional)', 'text'],
+    ['address', 'Address (optional)', 'text'],
+  ],
 };
 
 // ---------- State ----------
@@ -90,11 +133,11 @@ darkToggle.addEventListener('click', () => {
 
 // ---------- Step navigation ----------
 function showPanel(name) {
-  ['stage', 'doc', 'template', 'form', 'pay'].forEach((n) => {
+  ['catalog', 'template', 'form', 'pay'].forEach((n) => {
     document.getElementById(`panel-${n}`).classList.toggle('hidden', n !== name);
   });
   document.querySelectorAll('.step').forEach((el, i) => {
-    const order = ['stage', 'doc', 'template', 'form', 'pay'];
+    const order = ['catalog', 'template', 'form', 'pay'];
     el.classList.toggle('active', order[i] === name);
   });
 }
@@ -102,44 +145,64 @@ document.querySelectorAll('[data-back]').forEach((btn) => {
   btn.addEventListener('click', () => showPanel(btn.dataset.back));
 });
 
-// ---------- Load catalog & build stage grid ----------
+// ---------- Load catalog & build card list ----------
 async function init() {
   const res = await fetch('/api/catalog');
   catalog = await res.json();
   document.getElementById('priceTag').textContent = `KSh ${catalog.priceKes}`;
   document.getElementById('priceTag2').textContent = catalog.priceKes;
 
-  const stageGrid = document.getElementById('stageGrid');
-  Object.entries(catalog.stages).forEach(([key, stage]) => {
-    const card = document.createElement('div');
-    card.className = 'option-card';
-    card.innerHTML = `<h3>${stage.label}</h3><p>${Object.keys(stage.documents).length} document types</p>`;
-    card.addEventListener('click', () => selectStage(key, card));
-    stageGrid.appendChild(card);
+  renderCatalog('');
+  document.getElementById('catalogSearch').addEventListener('input', (e) => {
+    renderCatalog(e.target.value.trim().toLowerCase());
   });
 }
 
-function selectStage(key, card) {
-  state.stage = key;
-  document.querySelectorAll('#stageGrid .option-card').forEach((c) => c.classList.remove('selected'));
-  card.classList.add('selected');
+function renderCatalog(filterText) {
+  const list = document.getElementById('catalogList');
+  list.innerHTML = '';
 
-  const docGrid = document.getElementById('docGrid');
-  docGrid.innerHTML = '';
-  Object.entries(catalog.stages[key].documents).forEach(([docKey, doc]) => {
-    const c = document.createElement('div');
-    c.className = 'option-card';
-    c.innerHTML = `<h3>${doc.label}</h3><p>3 templates available</p>`;
-    c.addEventListener('click', () => selectDoc(docKey, c));
-    docGrid.appendChild(c);
+  Object.entries(catalog.stages).forEach(([stageKey, stage]) => {
+    const entries = Object.entries(stage.documents).filter(([, doc]) => {
+      if (!filterText) return true;
+      return (doc.label + ' ' + (doc.description || '')).toLowerCase().includes(filterText);
+    });
+    if (entries.length === 0) return;
+
+    const group = document.createElement('div');
+    group.className = 'catalog-group';
+    group.innerHTML = `<div class="catalog-group-title">${stage.label}</div>`;
+
+    const grid = document.createElement('div');
+    grid.className = 'catalog-grid';
+    entries.forEach(([docKey, doc]) => {
+      const card = document.createElement('div');
+      card.className = 'doc-card';
+      card.innerHTML = `
+        <div class="doc-card-icon">${doc.icon || '📄'}</div>
+        <h3>${doc.label}</h3>
+        <p>${doc.description || ''}</p>
+        <div class="doc-card-meta">
+          <span class="doc-card-price">KSh ${catalog.priceKes}</span>
+          <span class="doc-card-templates">3 templates</span>
+        </div>
+      `;
+      card.addEventListener('click', () => selectDoc(stageKey, docKey));
+      grid.appendChild(card);
+    });
+
+    group.appendChild(grid);
+    list.appendChild(group);
   });
-  showPanel('doc');
+
+  if (!list.children.length) {
+    list.innerHTML = '<p class="hint">No documents match your search.</p>';
+  }
 }
 
-function selectDoc(docKey, card) {
+function selectDoc(stageKey, docKey) {
+  state.stage = stageKey;
   state.docType = docKey;
-  document.querySelectorAll('#docGrid .option-card').forEach((c) => c.classList.remove('selected'));
-  card.classList.add('selected');
 
   const tGrid = document.getElementById('templateGrid');
   tGrid.innerHTML = '';
